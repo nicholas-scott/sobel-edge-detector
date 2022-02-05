@@ -50,8 +50,6 @@ class Kernel():
         self.k = 1
         self.sum = 1
 
-    def innitSobelGradient(self, arr2D):
-        return
 
     def calcGausian(self, x, y, sigma):
         ## TODO: only recalculate the exponent 
@@ -144,6 +142,7 @@ def sobelMagnitude(gradientX, gradientY):
             dataMagnitudeGradient[i][j] = numpy.sqrt((gradientX[i][j] **2) +  (gradientY[i][j] ** 2))
     return dataMagnitudeGradient
 
+## Creates an array of the directions of the gradient. 
 def sobelDirection(gradientX, gradientY):
     height, width = gradientX.shape
     dataSobelDirection = numpy.array([[0] * width for i in range(height)]).astype(numpy.uint8)
@@ -152,6 +151,7 @@ def sobelDirection(gradientX, gradientY):
             dataSobelDirection[i][j] = sobelDirectionToRegion(numpy.arctan2(gradientY[i][j], gradientX[i][j]))
     return dataSobelDirection
 
+## Gets the direcetion of the neighbours
 def sobelDirectionToRegion(direction):
     direction = numpy.degrees(direction) % 180
     if(direction < 22.5):
@@ -165,6 +165,7 @@ def sobelDirectionToRegion(direction):
     else:
         return HORIZONTAL
 
+## Returns all edge pixels using non-maxima supression 
 def getEdges(gradientMagnitude, gradientDirections):
     height, width = gradientMagnitude.shape
     dataSobelEdges = numpy.array([[0] * width for i in range(height)]).astype(numpy.uint8)
@@ -178,6 +179,7 @@ def getEdges(gradientMagnitude, gradientDirections):
                 dataSobelEdges[i][j] = gradientMagnitude[i][j]
     return dataSobelEdges
 
+## Returns the coordinates of the theshhold neighbours 
 def getThreshHoldNeighbours(i, j, gradientDirection):
     if(gradientDirection == HORIZONTAL):
         ## Return the left and right neighbour 
@@ -192,6 +194,7 @@ def getThreshHoldNeighbours(i, j, gradientDirection):
         ## Return top left and bottom right
         return (i - 1, j - 1), (i + 1, j + 1) 
 
+## Checks if the threshold is met 
 def checkThreshHold(gradientMagnitude, center, neighbour1, neighbour2):
     centerMag = gradientMagnitude[center[0], center[1]]
     for neighbour in [neighbour1, neighbour2]:
