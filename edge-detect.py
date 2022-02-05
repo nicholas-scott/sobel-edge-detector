@@ -95,11 +95,9 @@ def myEdgeFilter(img0, sigma):
 
     #Calculate direction of magnitude, does not create a greyscale image. 
     dataMagnitudeDirections = sobelDirection(dataGradientX, dataGradientY)
-    print(dataMagnitudeDirections)
 
     #Calculate the threshholds using the magnitude and direction
     dataEdgesDetected = getEdges(dataMagnitude, dataMagnitudeDirections)
-    print(dataEdgesDetected)
     dataEdgeDetectedImage = Image.fromarray(dataEdgesDetected, mode="L")
     dataEdgeDetectedImage.save(f"edges_{file}")
 
